@@ -3,6 +3,7 @@
 
 from configparser import ConfigParser
 from posix import listdir
+import shlex
 from sys import path
 from ..core.base_task import BaseTask
 from ..core.getVars import get_val
@@ -22,6 +23,7 @@ from ..status.rclone_status import RcloneStatus
 from ..status.status_manager import StatusManager
 from ..database.dbhandler import TorToolkitDB
 from ..utils.misc_utils import clear_stuff
+from ..utils.zip7_utils import extract_archive
 
 
 torlog = logging.getLogger(__name__)
@@ -315,6 +317,36 @@ class RcloneUploader(BaseTask):
             raise Exception("SA Enabled but not configured correctly as no sa teamdrive id or folder is provided.")
         
         sa_folder = get_val("SA_ACCOUNTS_FOLDER")
+        if not os.path.exists(sa_folder):
+            print("in here")
+            print(get_val("SA_ZIP_FILE"))
+            db = TorToolkitDB()
+            
+            _, blob = db.get_variable("SA_ZIP_FILE")
+            if blob is not None:
+                
+                if blob is not None:
+                    fpath = os.path.join(os.getcwd(),"sa_files.zip")
+                    epath = os.path.join(os.getcwd(),"sa_files")
+                    
+                    os.makedirs(epath, exist_ok=True)
+                    with open(fpath, "wb") as f:
+                        f.write(blob)
+                    print("file written")
+                    cmd = f'7z e -y "{fpath}" "-o{epath}"'
+                    cmd = shlex.split(cmd)
+                    process = await asyncio.create_subprocess_exec(
+                        *cmd,
+                        stderr=asyncio.subprocess.PIPE,
+                        stdout=asyncio.subprocess.PIPE
+                    )
+                    
+                    stdout, stderr = await process.communicate()
+                    await clear_stuff(fpath)
+                    
+                    sa_folder = epath
+                
+            
         if os.path.exists(sa_folder) and os.path.isdir(sa_folder):
             total_sas = len(os.listdir(sa_folder))
             if change:
@@ -469,7 +501,7 @@ class RcloneController:
         res = await self._rclone_up.execute()
         status_msg.set_inactive()
         
-        clear_stuff(self._path)
+        await clear_stuff(self._path)
         if self._rclone_up.is_errored:
             await self._update_msg.edit("Your Task was unsuccessful. {}".format(self._rclone_up.get_error_reason()), parse_mode="html")
         else:
