@@ -1,3 +1,4 @@
+
 name: Manually Deploy to heroku
 
 on: workflow_dispatch
@@ -28,3 +29,5 @@ jobs:
           HD_MAX_TORRENT_SIZE: ${{secrets.MAX_TORRENT_SIZE}}
           MEGA_UNAME: ${{secrets.MEGA_UNAME}}
           MEGA_PASS: ${{secrets.MEGA_PASS}}
+          MEGA_API: ${{secrets.MEGA_API}}
+
