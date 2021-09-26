@@ -26,3 +26,5 @@ jobs:
           HD_MAX_DL_LINK_SIZE: ${{secrets.MAX_DL_LINK_SIZE}}
           HD_MAX_MEGA_LIMIT: ${{secrets.MAX_MEGA_LIMIT}}
           HD_MAX_TORRENT_SIZE: ${{secrets.MAX_TORRENT_SIZE}}
+          MEGA_UNAME: ${{secrets.MEGA_UNAME}}
+          MEGA_PASS: ${{secrets.MEGA_PASS}}
