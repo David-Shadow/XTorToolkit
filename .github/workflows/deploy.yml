@@ -21,14 +21,14 @@ jobs:
           heroku container:push web
           --app ${secrets.HEROKU_APP_NAME}
           --arg REACT_APP_TITLE="${secrets.REACT_APP_TITLE}"
-          --arg  HD_API_ID = "${{secrets.API_ID}}"
-           --arg HD_API_HASH = "${{secrets.API_HASH}}"
-           --arg HD_BOT_TOKEN = "${{secrets.BOT_TOKEN}}"
-           --arg HD_ALD_USR = "${{secrets.ALD_USR}}"
-           --arg HD_BASE_URL_OF_BOT = "${{secrets.BASE_URL_OF_BOT}}"
-           --arg HD_OWNER_ID = "${{secrets.OWNER_ID}}"
-           --arg HD_MAX_DL_LINK_SIZE = "${{secrets.MAX_DL_LINK_SIZE}}"
-           --arg HD_MAX_MEGA_LIMIT = "${{secrets.MAX_MEGA_LIMIT}}"
-           --arg HD_MAX_TORRENT_SIZE = "${{secrets.MAX_TORRENT_SIZE}}"
+            HD_API_ID = "${{secrets.API_ID}}"
+            HD_API_HASH = "${{secrets.API_HASH}}"
+            HD_BOT_TOKEN = "${{secrets.BOT_TOKEN}}"
+            HD_ALD_USR = "${{secrets.ALD_USR}}"
+            HD_BASE_URL_OF_BOT = "${{secrets.BASE_URL_OF_BOT}}"
+            HD_OWNER_ID = "${{secrets.OWNER_ID}}"
+            HD_MAX_DL_LINK_SIZE = "${{secrets.MAX_DL_LINK_SIZE}}"
+            HD_MAX_MEGA_LIMIT = "${{secrets.MAX_MEGA_LIMIT}}"
+            HD_MAX_TORRENT_SIZE = "${{secrets.MAX_TORRENT_SIZE}}"
       - name: "Releases the container"
         run: heroku container:release web --app ${secrets.HEROKU_APP_NAME}
