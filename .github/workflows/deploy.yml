@@ -1,3 +1,4 @@
+
 name: Manually Deploy to heroku
 
 on: workflow_dispatch
@@ -12,23 +13,14 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
           heroku_email: ${{secrets.HEROKU_EMAIL}}
-          justlogin: true
-      - name: "Login to heroku registry"
-        run: heroku container:login
-
-      - name: "Build and push to heroku registry"
-        run: >
-          heroku container:push web
-          --app ${secrets.HEROKU_APP_NAME}
-          --arg REACT_APP_TITLE="${secrets.REACT_APP_TITLE}"
-            HD_API_ID = "${{secrets.API_ID}}"
-            HD_API_HASH = "${{secrets.API_HASH}}"
-            HD_BOT_TOKEN = "${{secrets.BOT_TOKEN}}"
-            HD_ALD_USR = "${{secrets.ALD_USR}}"
-            HD_BASE_URL_OF_BOT = "${{secrets.BASE_URL_OF_BOT}}"
-            HD_OWNER_ID = "${{secrets.OWNER_ID}}"
-            HD_MAX_DL_LINK_SIZE = "${{secrets.MAX_DL_LINK_SIZE}}"
-            HD_MAX_MEGA_LIMIT = "${{secrets.MAX_MEGA_LIMIT}}"
-            HD_MAX_TORRENT_SIZE = "${{secrets.MAX_TORRENT_SIZE}}"
-      - name: "Releases the container"
-        run: heroku container:release web --app ${secrets.HEROKU_APP_NAME}
+          usedocker: true
+          docker_heroku_process_type: web
+          stack: "container"
+          region: "eu"
+        env:
+          HD_API_ID: ${{secrets.API_ID}}
+          HD_API_HASH: ${{secrets.API_HASH}}
+          HD_BOT_TOKEN: ${{secrets.BOT_TOKEN}}
+          HD_ALD_USR: ${{secrets.ALD_USR}}
+          HD_BASE_URL_OF_BOT: ${{secrets.BASE_URL_OF_BOT}}
+          HD_OWNER_ID: ${{secrets.OWNER_ID}}
